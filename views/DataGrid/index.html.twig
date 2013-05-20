@@ -1,0 +1,20 @@
+{% set options = {
+    'data_url': url('thrace_data_grid.data', {'name': dataGrid.name}),
+    'row_action_url': url('thrace_data_grid.row_action', {'name': dataGrid.name}),
+    'mass_action_url': url('thrace_data_grid.mass_action', {'name': dataGrid.name}),
+    'sortable_url': url('thrace_data_grid.sortable_action', {'name': dataGrid.name}),
+    'custom_button_dlg_title': 'custom_button_dlg_title'|trans({}, translationDomain),
+    'custom_button_dlg_body': 'custom_button_dlg_body'|trans({}, translationDomain),
+    'massActionLabels': {
+        'select_all': 'select_all'|trans({}, translationDomain),
+        'deselect_all': 'deselect_all'|trans({}, translationDomain),
+        'with_selected': 'with_selected'|trans({}, translationDomain),
+        'select_action': 'select_action'|trans({}, translationDomain),
+    }
+} %}
+<div id="thrace-datagrid-container-{{ dataGrid.name }}">
+    <table data-options="{{ dataGrid.exportOptions|merge(options)|json_encode }}" class='thrace-datagrid' id="thrace-datagrid-{{ dataGrid.name }}"></table>
+    <div id="thrace-datagrid-{{ dataGrid.name }}-pager"></div>
+</div>
+
+

@@ -1,0 +1,35 @@
+@CHARSET "UTF-8";
+input.ui-pg-input, .searchFilter input {
+    width: auto;
+    padding: 0px;
+    margin: 0px;
+    line-height: normal
+}
+
+input.input-elm {
+    height: 27px;
+    padding: 0px;
+    margin: 5px;
+    line-height: normal
+}
+
+input.delete-rule, input.add-rule {
+    width: 20px;
+    padding: 0px;
+    margin: 5px;
+    line-height: normal
+}
+
+select.ui-pg-selbox, select.opsel, .searchFilter select {
+    width: auto;
+    padding: 0px;
+    margin: 0px;
+    line-height: normal
+}
+
+.thrace-massaction input{
+    width: auto;
+    padding: 0px;
+    margin-left: 5px;
+    line-height: normal
+}

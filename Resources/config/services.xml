@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+        <parameters>
+            <parameter key="thrace_data_grid.controller.datagrid.class">Thrace\DataGridBundle\Controller\DataGridController</parameter>
+            <parameter key="thrace_data_grid.factory.datagrid.class">Thrace\DataGridBundle\DataGrid\DataGridFactory</parameter>
+            <parameter key="thrace_data_grid.provider.class">Thrace\DataGridBundle\DataGrid\Provider\DataGridProvider</parameter>
+            <parameter key="thrace_data_grid.doctrine.orm.handler.datagrid.class">Thrace\DataGridBundle\Doctrine\ORM\DataGridHandler</parameter>
+            <parameter key="thrace_data_grid.twig.extension.datagrid.class">Thrace\DataGridBundle\Twig\Extension\DataGridExtension</parameter>
+        </parameters>
+
+    <services>
+        <service id="thrace_data_grid.controller.datagrid" class="%thrace_data_grid.controller.datagrid.class%">
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+        </service>
+
+        <service id="thrace_data_grid.factory.datagrid" class="%thrace_data_grid.factory.datagrid.class%" />
+
+        <service id="thrace_data_grid.provider" class="%thrace_data_grid.provider.class%">
+            <argument type="service" id="service_container" />
+            <argument type="collection" />
+        </service>
+
+        <service id="thrace_data_grid.doctrine.orm.handler.datagrid" class="%thrace_data_grid.doctrine.orm.handler.datagrid.class%">
+            <call method="setDispatcher">
+                <argument type="service" id="event_dispatcher" />
+            </call>
+        </service>
+
+        <service id="thrace_data_grid.twig.extension.datagrid" class="%thrace_data_grid.twig.extension.datagrid.class%">
+            <argument type="service" id="service_container" />
+            <tag name="twig.extension" />
+        </service>
+
+    </services>
+
+</container>

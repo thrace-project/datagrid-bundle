@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+	        <trans-unit id="1">
+                <source>select_all</source>
+                <target>Select all</target>
+            </trans-unit>
+            
+	        <trans-unit id="2">
+                <source>toggle_select_all</source>
+                <target>Toggle select all</target>
+            </trans-unit>
+            
+	        <trans-unit id="3">
+                <source>select_action</source>
+                <target>Select action</target>
+            </trans-unit>
+            
+	        <trans-unit id="4">
+                <source>custom_button_dlg_title</source>
+                <target>Error</target>
+            </trans-unit>
+            
+	        <trans-unit id="5">
+                <source>custom_button_dlg_body</source>
+                <target>Please select row</target>
+            </trans-unit>
+            
+	        <trans-unit id="6">
+                <source>with_selected</source>
+                <target>With selected</target>
+            </trans-unit>
+            
+        </body>
+    </file>
+</xliff>

@@ -1,0 +1,29 @@
+{
+    "name":         "thrace/datagrid-bundle",
+    "description":  "This bundle provides easy creating of jqGrid datagrids",
+    "keywords":     ["datagrid", "jqGrid", "jQuery", "Symfony"],
+    "type":         "symfony-bundle",
+    "license":      "MIT",
+    "authors":      [
+        {
+            "name":     "Nikolay Georgiev",
+            "email": "azazen09@gmail.com"
+        }
+    ],
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.*-dev"
+        }
+    },
+    "minimum-stability": "dev",
+    "require":      {
+        "symfony/framework-bundle": ">=2.1,<2.3-dev"
+    },
+    "require-dev": {
+        "thrace/component-bundle": "*"
+    },
+    "autoload":     {
+        "psr-0": { "Thrace\\DataGridBundle": "" }
+    },
+    "target-dir": "Thrace/DataGridBundle"
+}
