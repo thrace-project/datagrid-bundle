@@ -7,7 +7,7 @@
     "authors":      [
         {
             "name":     "Nikolay Georgiev",
-            "email": "azazen09@gmail.com"
+            "email": "symfonist@gmail.com"
         }
     ],
     "extra": {
@@ -17,7 +17,7 @@
     },
     "minimum-stability": "dev",
     "require":      {
-        "symfony/framework-bundle": ">=2.1,<2.3-dev"
+        "symfony/framework-bundle": ">=2.1,<2.4"
     },
     "require-dev": {
         "thrace/component-bundle": "*"
