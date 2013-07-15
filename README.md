@@ -17,7 +17,9 @@ Features include:
 - Sortable rows
 - Highly configurable (It supports most of the jqgrid options)
 
-**Notice:** All PHP code is tested with PHPUnit.
+**Notice:** All PHP code is tested with PHPUnit. To run test php 
+composer.phar install --dev --prefer-source 
+phpunit
 
 **Caution:** This bundle is developed in sync with [symfony's repository](https://github.com/symfony/symfony). 
 

@@ -11,3 +11,7 @@ This changelog references the relevant changes done in 1.0 minor versions.
 
  * some minor fixes
 
+* 1.0.3 (2013-07-15)
+
+ * added travis
+
