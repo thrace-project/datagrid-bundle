@@ -17,11 +17,20 @@
     },
     "minimum-stability": "dev",
     "require":      {
-        "symfony/framework-bundle": ">=2.1,<2.4"
+        "php": ">=5.3.3",
+        "symfony/framework-bundle": "~2.3",
+        "symfony/options-resolver": "dev-master",
+        "symfony/twig-bundle": "2.*"
     },
     "require-dev": {
         "thrace/component-bundle": "*",
-   		"phpunit/phpunit": "3.7.*@dev"
+   		"phpunit/phpunit": "3.7.*@dev",
+   		"symfony/doctrine-bridge": "~2.3",
+        "doctrine/orm": "2.*",
+        "doctrine/doctrine-bundle": "1.*"
+    },
+    "config": {
+        "bin-dir": "/usr/local/bin/"
     },
     "autoload":     {
         "psr-0": { "Thrace\\DataGridBundle": "" }

@@ -8,7 +8,7 @@
  * with this source code in the file LICENSE.
  */
 
-if (!@$loader = include __DIR__.'/../../../../vendor/autoload.php') {
+if (!@$loader = include __DIR__.'/../vendor/autoload.php') {
     throw new RuntimeException('Install dependencies to run test suite.');
 }
 
