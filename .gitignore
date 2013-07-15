@@ -2,7 +2,7 @@
 phpunit.xml
 phpunit.phar
 
-
+/vendor
 # Doctrine backup files 
 *.php~
 
