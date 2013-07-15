@@ -2,7 +2,10 @@
 phpunit.xml
 phpunit.phar
 
-/vendor
+# Composer
+/vendor/
+composer.lock
+
 # Doctrine backup files 
 *.php~
 

@@ -29,9 +29,6 @@
         "doctrine/orm": "2.*",
         "doctrine/doctrine-bundle": "1.*"
     },
-    "config": {
-        "bin-dir": "/usr/local/bin/"
-    },
     "autoload":     {
         "psr-0": { "Thrace\\DataGridBundle": "" }
     },
