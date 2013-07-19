@@ -19,7 +19,7 @@ Features include:
 
 **Notice:** All PHP code is tested with PHPUnit. To run test 
 composer.phar install --dev --prefer-source 
-php phpunit.phar
+phpunit
 
 **Caution:** This bundle is developed in sync with [symfony's repository](https://github.com/symfony/symfony). 
 
