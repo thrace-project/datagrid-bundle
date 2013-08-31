@@ -43,6 +43,11 @@ class DataGridEvents
     const onRowDel = 'thrace_datagrid.onRowDel';
     
     /**
+     * Event is dispatched after query builder is ready
+     */
+    const onQueryBuilderReady = 'thrace_datagrid.onQueryBuilderReady';
+    
+    /**
      * Event is dispatched after query is ready
      */
     const onQueryReady = 'thrace_datagrid.onQueryReady';

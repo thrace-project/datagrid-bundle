@@ -9,6 +9,10 @@
  */
 namespace Thrace\DataGridBundle\Doctrine\ORM;
 
+use Thrace\DataGridBundle\Event\QueryBuilderEvent;
+
+use Thrace\DataGridBundle\DataGridEvents;
+
 use Doctrine\ORM\QueryBuilder;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -52,14 +56,15 @@ class DataGridHandler extends AbstractDataGridHandler
             $this->applyFilters($qb, $options['filters']);
         }
         
-        // dispatch should onQueryBuilderReady event here
-        
         if (!$this->dataGrid->isSortableEnabled() && $options['page'] && $options['records']){
             $qb->setMaxResults($options['records']);
             $qb->setFirstResult(($options['page'] - 1) * $options['records']);
         }
 
-        $this->setQuery($qb->getQuery());
+        $queryBuilderEvent = new QueryBuilderEvent($this->dataGrid->getName(), $qb);
+        $this->dispatcher->dispatch(DataGridEvents::onQueryBuilderReady, $queryBuilderEvent);
+        
+        $this->setQuery($queryBuilderEvent->getQueryBuilder()->getQuery());
         
         // Getting count
         $paginator = new Paginator($this->getQuery());

@@ -2,21 +2,19 @@
 /*
  * This file is part of ThraceDataGridBundle
  *
- * (c) Nikolay Georgiev <azazen09@gmail.com>
+ * (c) Nikolay Georgiev <symfonist@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
 namespace Thrace\DataGridBundle\Event;
 
-use Thrace\DataGridBundle\DataGrid\DataGridInterface;
-
 use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Class implementation of Event
  *
- * @author Nikolay Georgiev <azazen09@gmail.com>
+ * @author Nikolay Georgiev <symfonist@gmail.com>
  * @since 1.0
  */
 class RowEvent extends Event
@@ -25,7 +23,7 @@ class RowEvent extends Event
     /**
      * @var string
      */
-    protected $name;
+    protected $dataGridName;
 
     /**
      * @var boolean
@@ -50,20 +48,20 @@ class RowEvent extends Event
     /**
      * Constructor
      *
-     * @param string $name                     
+     * @param string $dataGridName                     
      */
-    public function __construct ($name, $id)
+    public function __construct ($dataGridName, $id)
     {
-        $this->name = (string) $name;
+        $this->dataGridName = (string) $dataGridName;
         $this->setId($id);
     }
 
     /**
      * Gets DataGrid name
      */
-    public function getName () 
+    public function getDataGridName () 
     {
-        return $this->name;
+        return $this->dataGridName;
     }
 
     /**

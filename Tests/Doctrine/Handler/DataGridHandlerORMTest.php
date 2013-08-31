@@ -55,8 +55,8 @@ class DataGridHandlerORMTest extends BaseTestCaseORM
         
         $dataGridHandler = new DataGridHandler();
         $dataGridHandler
-            ->setDispatcher($this->getMockEventDispatcher(1))
-            ->setDataGrid($this->getMockDataGrid($this->getQueryBuilderForDependentGrid(), 1, true))
+            ->setDispatcher($this->getMockEventDispatcher(2))
+            ->setDataGrid($this->getMockDataGrid($this->getQueryBuilderForDependentGrid(), true))
             ->resolveOptions($options)
             ->buildQuery()
         ;
@@ -72,8 +72,8 @@ class DataGridHandlerORMTest extends BaseTestCaseORM
         
         $dataGridHandler = new DataGridHandler();
         $dataGridHandler
-            ->setDispatcher($this->getMockEventDispatcher(2))
-            ->setDataGrid($this->getMockDataGrid($this->getQueryBuilder(), 2, false, true))
+            ->setDispatcher($this->getMockEventDispatcher(3))
+            ->setDataGrid($this->getMockDataGrid($this->getQueryBuilder(), false, true))
             ->resolveOptions($this->getOptions('ne', 'test'))
             ->buildQuery()
             ->buildData()
@@ -489,7 +489,7 @@ class DataGridHandlerORMTest extends BaseTestCaseORM
     }
     
     
-    protected function getMockEventDispatcher($expects = 2)
+    protected function getMockEventDispatcher($expects = 3)
     {
         $mock = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
         
@@ -502,12 +502,12 @@ class DataGridHandlerORMTest extends BaseTestCaseORM
         return $mock;
     }
     
-    protected function getMockDataGrid(QueryBuilder $qb, $expects = 2, $dependent = false, $sortable = false)
+    protected function getMockDataGrid(QueryBuilder $qb, $dependent = false, $sortable = false)
     {
         $mock = $this->getMock('Thrace\DataGridBundle\DataGrid\DataGridInterface');
         
         $mock
-            ->expects($this->exactly($expects))
+            ->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('test'))
         ;

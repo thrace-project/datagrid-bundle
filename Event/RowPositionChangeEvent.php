@@ -2,7 +2,7 @@
 /*
  * This file is part of ThraceDataGridBundle
  *
- * (c) Nikolay Georgiev <azazen09@gmail.com>
+ * (c) Nikolay Georgiev <symfonist@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -14,7 +14,7 @@ use Symfony\Component\EventDispatcher\Event;
 /**
  * Row position change Event Class 
  *
- * @author Nikolay Georgiev <azazen09@gmail.com>
+ * @author Nikolay Georgiev <symfonist@gmail.com>
  * @since 1.0
  */
 class RowPositionChangeEvent extends Event
@@ -23,7 +23,7 @@ class RowPositionChangeEvent extends Event
     /**
      * @var string
      */
-    protected $name;
+    protected $dataGridName;
     
     /**
      * @var integer
@@ -43,13 +43,13 @@ class RowPositionChangeEvent extends Event
     /**
      * Contructor
      * 
-     * @param string $name
+     * @param string $dataGridName
      * @param integer $rowId
      * @param integer $rowPosition
      */
-    public function __construct ($name, $rowId, $rowPosition)
+    public function __construct ($dataGridName, $rowId, $rowPosition)
     {
-        $this->name = (string) $name;
+        $this->dataGridName = (string) $dataGridName;
         $this->rowId = (int) $rowId;
         $this->rowPosition = ((int) $rowPosition - 1);
     }
@@ -59,9 +59,9 @@ class RowPositionChangeEvent extends Event
      * 
      * @return string
      */
-    public function getName () 
+    public function getDataGridName () 
     {
-        return $this->name;
+        return $this->dataGridName;
     }
 
     /**

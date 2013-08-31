@@ -2,7 +2,7 @@
 /*
  * This file is part of ThraceDataGridBundle
  *
- * (c) Nikolay Georgiev <azazen09@gmail.com>
+ * (c) Nikolay Georgiev <symfonist@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -14,7 +14,7 @@ use Symfony\Component\EventDispatcher\Event;
 /**
  * Class implementation of Event
  *
- * @author Nikolay Georgiev <azazen09@gmail.com>
+ * @author Nikolay Georgiev <symfonist@gmail.com>
  * @since 1.0
  */
 class QueryEvent extends Event
@@ -23,7 +23,7 @@ class QueryEvent extends Event
     /**
      * @var string
      */
-    protected $name;
+    protected $dataGridName;
 
     /**
      * @var Object
@@ -33,21 +33,21 @@ class QueryEvent extends Event
     /**
      * Constructor
      *
-     * @param string $name   
+     * @param string $dataGridName   
      * @param Object $query                  
      */
-    public function __construct ($name, $query)
+    public function __construct ($dataGridName, $query)
     {
-        $this->name = (string) $name;
+        $this->dataGridName = (string) $dataGridName;
         $this->query = $query;
     }
 
     /**
      * Gets DataGrid name
      */
-    public function getName () 
+    public function getDataGridName () 
     {
-        return $this->name;
+        return $this->dataGridName;
     }
 
     /**

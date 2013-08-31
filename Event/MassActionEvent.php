@@ -2,7 +2,7 @@
 /*
  * This file is part of ThraceDataGridBundle
  *
- * (c) Nikolay Georgiev <azazen09@gmail.com>
+ * (c) Nikolay Georgiev <symfonist@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
@@ -14,7 +14,7 @@ use Symfony\Component\EventDispatcher\Event;
 /**
  * MassAction Event Class 
  *
- * @author Nikolay Georgiev <azazen09@gmail.com>
+ * @author Nikolay Georgiev <symfonist@gmail.com>
  * @since 1.0
  */
 class MassActionEvent extends Event
@@ -23,7 +23,7 @@ class MassActionEvent extends Event
     /**
      * @var string
      */
-    protected $name;
+    protected $dataGridName;
     
     /**
      * @var string
@@ -53,13 +53,13 @@ class MassActionEvent extends Event
     /**
      * Construct
      * 
-     * @param string $name
+     * @param string $dataGridName
      * @param string $massActionName
      * @param array $ids
      */
-    public function __construct ($name, $massActionName, array $ids, $selectAll, $query)
+    public function __construct ($dataGridName, $massActionName, array $ids, $selectAll, $query)
     {
-        $this->name = (string) $name;
+        $this->dataGridName = (string) $dataGridName;
         $this->massActionName = (string) $massActionName;
         $this->ids = $ids;
         $this->selectAll = (bool) $selectAll;
@@ -71,9 +71,9 @@ class MassActionEvent extends Event
      * 
      * @return string
      */
-    public function getName () 
+    public function getDataGridName () 
     {
-        return $this->name;
+        return $this->dataGridName;
     }
 
     /**

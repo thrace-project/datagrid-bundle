@@ -1,6 +1,8 @@
 <?php
 namespace Thrace\DataGridBundle\Tests\Event;
 
+use Thrace\DataGridBundle\Event\QueryBuilderEvent;
+
 use Thrace\DataGridBundle\Event\RowPositionChangeEvent;
 
 use Thrace\DataGridBundle\Event\RowEvent;
@@ -19,7 +21,7 @@ class DataGridEventTest extends BaseTestCase
     {   
         $event = new DataEvent('test', array(array('key' => 'value')));
 
-        $this->assertSame($event->getName(), 'test');
+        $this->assertSame($event->getDataGridName(), 'test');
         $this->assertSame($event->getData(), array(array('key' => 'value')));
         $event->setData(array(array('key2' => 'value2')));
         $this->assertSame(array(array('key2' => 'value2')), $event->getData());
@@ -30,7 +32,7 @@ class DataGridEventTest extends BaseTestCase
         $event = new MassActionEvent('test', 'someMassAction', array(1,2,3), true, new \stdClass());
         $event->setExtraData(array('key' => 'value'));
         
-        $this->assertSame($event->getName(), 'test');
+        $this->assertSame($event->getDataGridName(), 'test');
         $this->assertSame(array(1,2,3), $event->getIds());
         $this->assertTrue($event->getSelectAll());
         $this->assertSame('someMassAction', $event->getMassActionName());
@@ -42,7 +44,7 @@ class DataGridEventTest extends BaseTestCase
     {
         $event = new QueryEvent('test', new \stdClass());
         
-        $this->assertSame('test', $event->getName());
+        $this->assertSame('test', $event->getDataGridName());
         $this->assertInstanceOf('stdClass', $event->getQuery());
     }
     
@@ -50,7 +52,7 @@ class DataGridEventTest extends BaseTestCase
     {
         $event = new RowEvent('test', 1);
         
-        $this->assertSame('test', $event->getName());
+        $this->assertSame('test', $event->getDataGridName());
         $this->assertSame(1, $event->getId());
         $this->assertFalse($event->getSuccess());
         $this->assertEmpty($event->getData());
@@ -69,7 +71,7 @@ class DataGridEventTest extends BaseTestCase
     {
         $event = new RowPositionChangeEvent('test', 1, 10);
         
-        $this->assertSame('test', $event->getName());
+        $this->assertSame('test', $event->getDataGridName());
         $this->assertSame(1, $event->getRowId());
         $this->assertSame(9, $event->getRowPosition());
         $this->assertEmpty($event->getExtraData());
@@ -77,6 +79,13 @@ class DataGridEventTest extends BaseTestCase
         $event->setExtraData(array('extra'));
         $this->assertSame(array('extra'), $event->getExtraData());
     }
-
+    
+    public function testQueryBuilderEvent()
+    {
+        $event = new QueryBuilderEvent('test', new \stdClass());
+        
+        $this->assertSame('test', $event->getDataGridName());
+        $this->assertInstanceOf('stdClass', $event->getQueryBuilder());
+    }
 
 }

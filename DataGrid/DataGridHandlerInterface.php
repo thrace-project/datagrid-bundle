@@ -86,7 +86,7 @@ interface DataGridHandlerInterface
     /**
      * Gets query object
      * 
-     * @returns object
+     * @return object
      * @throws \LogicException
      */
     public function getQuery();

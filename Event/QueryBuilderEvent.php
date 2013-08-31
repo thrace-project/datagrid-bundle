@@ -14,10 +14,10 @@ use Symfony\Component\EventDispatcher\Event;
 /**
  * Class implementation of Event
  *
- * @author Nikolay Georgiev <azazen09@gmail.com>
+ * @author Nikolay Georgiev <symfonist@gmail.com>
  * @since 1.0
  */
-class DataEvent extends Event
+class QueryBuilderEvent extends Event
 {
 
     /**
@@ -26,20 +26,20 @@ class DataEvent extends Event
     protected $dataGridName;
 
     /**
-     * @var array
+     * @var Object
      */
-    protected $data = array();
+    protected $queryBuilder;
 
     /**
      * Constructor
      *
-     * @param string $dataGridName           
-     * @param array $data        
+     * @param string $dataGridName   
+     * @param Object $queryBuilder                 
      */
-    public function __construct ($dataGridName, array $data)
+    public function __construct ($dataGridName, $queryBuilder)
     {
         $this->dataGridName = (string) $dataGridName;
-        $this->data = $data;
+        $this->queryBuilder = $queryBuilder;
     }
 
     /**
@@ -51,24 +51,21 @@ class DataEvent extends Event
     }
 
     /**
-     * Get request object
-     *
-     * @return \Symfony\Component\HttpFoundation\Request
+     * Gets Object object
      */
-    public function getData ()
+    public function getQueryBuilder ()
     {
-        return $this->data;
+        return $this->queryBuilder;
+    }
+    
+    /**
+     * Sets QueryBuilder
+     * 
+     * @param Object $queryBuilder
+     */
+    public function setQueryBuilder($queryBuilder)
+    {
+        $this->queryBuilder = $queryBuilder;
     }
 
-    /**
-     * Sets data
-     * 
-     * @param array $data
-     * @return Thrace\DataGridBundle\Event\DataEvent
-     */
-    public function setData(array $data)
-    {
-        $this->data = $data;
-        return $this;
-    }
 }
