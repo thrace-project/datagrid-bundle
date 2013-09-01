@@ -185,7 +185,7 @@ class ProductManagementRowListener extends ContainerAware
 
     public function onRowAdd(RowEvent $event)
     {   
-        if ($event->getName() !== ProductManagementBuilder::IDENTIFIER){
+        if ($event->getDataGridName() !== ProductManagementBuilder::IDENTIFIER){
             return;
         }
         
@@ -198,7 +198,7 @@ class ProductManagementRowListener extends ContainerAware
     
     public function onRowEdit(RowEvent $event)
     {
-        if ($event->getName() !== ProductManagementBuilder::IDENTIFIER){
+        if ($event->getDataGridName() !== ProductManagementBuilder::IDENTIFIER){
             return;
         }
         
@@ -219,7 +219,7 @@ class ProductManagementRowListener extends ContainerAware
     
     public function onRowDelete(RowEvent $event)
     {
-        if ($event->getName() !== ProductManagementBuilder::IDENTIFIER){
+        if ($event->getDataGridName() !== ProductManagementBuilder::IDENTIFIER){
             return;
         }
         

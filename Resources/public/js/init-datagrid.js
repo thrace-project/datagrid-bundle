@@ -14,7 +14,7 @@ jQuery(document).ready(function(){
         var gridName = datagridId.replace('thrace-datagrid-', '');
         
         /** Getting options of a grid by id */
-        var options = jQuery(this).data('options');
+        var options = jQuery(this).data('options'); 
         
         var evaluateFn = function(options){
             jQuery.each(options, function(k,v){
@@ -29,6 +29,10 @@ jQuery(document).ready(function(){
         };
         
         evaluateFn(options); 
+        
+        if(options.postData == null){
+        	options.postData = {};
+        }
         
         var datatype = 'json';
         
@@ -79,9 +83,11 @@ jQuery(document).ready(function(){
                 var ids = aRowids;
 
                 jQuery.each(options.dependentDataGrids, function(idx, grid){
+                	var postData = options.postData;
+                	postData.masterGridRowId = ids;
                     var subGridId = 'thrace-datagrid-' + grid;  
                     jQuery("#" + subGridId).jqGrid('setGridParam',{
-                        postData: {'masterGridRowId': ids}
+                        postData: postData
                     })
                     .trigger('reloadGrid');
                 });
@@ -153,6 +159,7 @@ jQuery(document).ready(function(){
             editurl: options.row_action_url,
             datatype: datatype,
             mtype: 'post',
+            postData: options.postData,
             hidegrid: options.hideGrid,
             hiddengrid: options.hiddenGrid,
             autowidth: options.autoWidth,

@@ -182,6 +182,15 @@ class DataGridTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('data', $dataGrid->exportOptions());
     }
     
+    public function testPostData()
+    {
+        $dataGrid = $this->createDataGrid();
+        $this->assertEmpty($dataGrid->getPostData());
+        $dataGrid->setPostData(array('key' => 'data'));
+        $this->assertSame(array('key' => 'data'), $dataGrid->getPostData());
+        $this->assertArrayHasKey('postData', $dataGrid->exportOptions());
+    }
+    
     public function testSearchOptions()
     {
         $default = array('eq', 'ne', 'lt', 'le', 'gt', 'ge', 'bw', 'bn', 'ew', 'en', 'cn', 'nc');

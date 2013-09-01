@@ -222,6 +222,11 @@ class DataGrid implements DataGridInterface
      * @var array
      */
     protected $customButtons = array();
+    
+    /**
+     * @var array|null
+     */
+    protected $postData = null;
 
     /**
      * Constructor
@@ -1117,6 +1122,25 @@ class DataGrid implements DataGridInterface
         
         return $options;
     }
+    
+    /**
+     * (non-PHPdoc)
+     * @see \Thrace\DataGridBundle\DataGrid\DataGridInterface::setPostData()
+     */
+    public function setPostData(array $postData)
+    {
+        $this->postData = $postData;
+        return $this;
+    }
+    
+    /**
+     * (non-PHPdoc)
+     * @see \Thrace\DataGridBundle\DataGrid\DataGridInterface::getPostData()
+     */
+    public function getPostData()
+    {
+        return $this->postData;
+    }
 
     /**
      * Exports this datagrid to an array
@@ -1166,6 +1190,7 @@ class DataGrid implements DataGridInterface
         $data['multiSelectSortableEnabled'] = $this->isMultiSelectSortableEnabled();
         $data['multiSelectSortableColumn'] = $this->getMultiSelectSortableColumn();
         $data['customButtons'] = $this->getCustomButtonsAsOptions();
+        $data['postData'] = $this->getPostData();
       
         return $data;
     }

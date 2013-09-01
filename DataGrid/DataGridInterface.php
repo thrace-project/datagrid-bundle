@@ -778,5 +778,22 @@ interface DataGridInterface
      * @return array
      */
     public function getCustomButtonsAsOptions();
+    
+    /**
+     * Sets post data in jqgrid
+     * 
+     * Provides a fluent interface
+     * 
+     * @param array $postData
+     * @return \Thrace\DataGridBundle\DataGrid\DataGridInterface
+     */
+    public function setPostData(array $postData);
+    
+    /**
+     * Gets post data in jqgrid
+     * 
+     * @return array
+     */
+    public function getPostData();
 
 }

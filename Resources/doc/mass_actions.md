@@ -39,7 +39,7 @@ class UserManagementMassActionListener
 
     public function onMassAction(MassActionEvent $event)
     {
-        if (!$event->getName() == UserManagementBuilder::IDENTIFIER){
+        if (!$event->getDataGridName() == UserManagementBuilder::IDENTIFIER){
             return;
         }
 
