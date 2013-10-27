@@ -676,6 +676,24 @@ interface DataGridInterface
     public function getDependentDataGrids ();
     
     /**
+     * Sets dependantGridField
+     * 
+     * Provides a fluent interface
+     * 
+     * @param string $dependantGridField
+     * @return \Thrace\DataGridBundle\DataGrid\DataGridInterface
+     */
+    public function setDependantGridField($dependantGridField);
+    
+    /**
+     * Gets dependant grid field name
+     * 
+     * @return string
+     * @throws \InvalidArgumentException
+     */
+    public function getDependantGridField();
+    
+    /**
      * Sets jstree name
      * When change is made to jstree then jqgrid will trigger reload method
      * 

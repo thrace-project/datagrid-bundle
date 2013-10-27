@@ -204,6 +204,11 @@ class DataGrid implements DataGridInterface
     protected $dependentGrid = false;
     
     /**
+     * @var string
+     */
+    protected $dependantGridField;
+    
+    /**
      * @var string | null
      */
     protected $treeName;
@@ -989,6 +994,29 @@ class DataGrid implements DataGridInterface
     public function isDependentGrid()
     {
         return $this->dependentGrid;
+    }
+    
+    /**
+     * (non-PHPdoc)
+     * @see \Thrace\DataGridBundle\DataGrid\DataGridInterface::setDependantGridField()
+     */
+    public function setDependantGridField($dependantGridField)
+    {
+        $this->dependantGridField = (string) $dependantGridField;
+        return $this;
+    }
+    
+    /**
+     * (non-PHPdoc)
+     * @see \Thrace\DataGridBundle\DataGrid\DataGridInterface::getDependantGridField()
+     */
+    public function getDependantGridField()
+    {
+        if ($this->isDependentGrid() && !$this->dependantGridField){
+            throw new \InvalidArgumentException('DependantGridField is not set.');    
+        }
+        
+        return $this->dependantGridField;
     }
     
     /**

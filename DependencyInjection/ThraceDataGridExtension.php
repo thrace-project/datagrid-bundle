@@ -37,7 +37,13 @@ class ThraceDataGridExtension extends Extension
         
         $container->setParameter('thrace_data_grid.translation_domain', $config['translation_domain']);
         
-        $container->setAlias('thrace_data_grid.handler.datagrid', 'thrace_data_grid.doctrine.orm.handler.datagrid');
+        if($config['db_driver'] === 'orm'){
+            $container->setAlias('thrace_data_grid.handler.datagrid', 'thrace_data_grid.doctrine.orm.handler.datagrid');
+        } elseif ($config['db_driver'] === 'mongodb') {
+            $container->setAlias('thrace_data_grid.handler.datagrid', 'thrace_data_grid.doctrine.mongodb.handler.datagrid');
+            $loader->load('mongodb.xml');
+        }
+        
 
     }
 }

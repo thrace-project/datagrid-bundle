@@ -29,10 +29,20 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('thrace_data_grid');
+        $rootNode = $treeBuilder->root('thrace_data_grid'); 
+        $supportedDrivers = array('orm', 'mongodb');
 
         $rootNode
             ->children()
+                ->scalarNode('db_driver')
+                    ->validate()
+                        ->ifNotInArray($supportedDrivers)
+                        ->thenInvalid('The driver %s is not supported. Please choose one of '.json_encode($supportedDrivers))
+                    ->end()
+                    ->cannotBeOverwritten()
+                    ->isRequired()
+                    ->cannotBeEmpty()
+                ->end()
                 ->scalarNode('translation_domain')->defaultValue('ThraceDataGridBundle')->cannotBeEmpty()->end()
             ->end()
         ;

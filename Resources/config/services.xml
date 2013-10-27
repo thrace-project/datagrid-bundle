@@ -9,6 +9,7 @@
             <parameter key="thrace_data_grid.factory.datagrid.class">Thrace\DataGridBundle\DataGrid\DataGridFactory</parameter>
             <parameter key="thrace_data_grid.provider.class">Thrace\DataGridBundle\DataGrid\Provider\DataGridProvider</parameter>
             <parameter key="thrace_data_grid.doctrine.orm.handler.datagrid.class">Thrace\DataGridBundle\Doctrine\ORM\DataGridHandler</parameter>
+            <parameter key="thrace_data_grid.doctrine.mongodb.handler.datagrid.class">Thrace\DataGridBundle\Doctrine\ODM\DataGridHandler</parameter>
             <parameter key="thrace_data_grid.twig.extension.datagrid.class">Thrace\DataGridBundle\Twig\Extension\DataGridExtension</parameter>
         </parameters>
 
@@ -27,6 +28,13 @@
         </service>
 
         <service id="thrace_data_grid.doctrine.orm.handler.datagrid" class="%thrace_data_grid.doctrine.orm.handler.datagrid.class%">
+            <call method="setDispatcher">
+                <argument type="service" id="event_dispatcher" />
+            </call>
+        </service>
+
+        <service id="thrace_data_grid.doctrine.mongodb.handler.datagrid" class="%thrace_data_grid.doctrine.mongodb.handler.datagrid.class%">
+            <argument type="service" id="knp_paginator" />
             <call method="setDispatcher">
                 <argument type="service" id="event_dispatcher" />
             </call>
