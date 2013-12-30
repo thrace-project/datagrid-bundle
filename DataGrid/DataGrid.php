@@ -1161,7 +1161,7 @@ class DataGrid implements DataGridInterface
         $data['autoWidth'] = $this->getAutoWidth();
         $data['forceFit'] = $this->getForceFit();
         $data['shrinkToFit'] = $this->getShrinkToFit();
-        $data['colNames'] = $this->getColNames();
+        $data['colNames'] = array_values($this->getColNames());
         $data['colModel'] = $this->getColModel();
         $data['pagerEnabled'] = $this->isPagerEnabled();
         $data['viewRecordsEnabled'] = $this->isViewRecordsEnabled();
