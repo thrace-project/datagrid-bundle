@@ -2,71 +2,58 @@
 /*
  * This file is part of ThraceDataGridBundle
  *
- * (c) Nikolay Georgiev <azazen09@gmail.com>
+ * (c) Nikolay Georgiev <symfonist@gmail.com>
  *
  * This source file is subject to the MIT license that is bundled
  * with this source code in the file LICENSE.
  */
-namespace Thrace\DataGridBundle\Doctrine\ORM;
+namespace Thrace\DataGridBundle\Handler;
 
-use Thrace\DataGridBundle\Event\QueryBuilderEvent;
-
-use Thrace\DataGridBundle\DataGridEvents;
-
+use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
-
 use Doctrine\ORM\Tools\Pagination\Paginator;
-
-use Thrace\DataGridBundle\DataGrid\AbstractDataGridHandler;
 
 /**
  * Implementation of AbstractDataGridHandler
  *
- * @author Zender <azazen09@gmail.com>
+ * @author Nikolay Georgiev <symfonist@gmail.com>
  * @since 1.0
  */
-class DataGridHandler extends AbstractDataGridHandler
+class ORMHandler extends AbstractHandler
 {      
-    /**
-     * (non-PHPdoc)
-     * @see \Thrace\DataGridBundle\DataGrid\DataGridHandlerInterface::buildQuery()
-     */
-    public function buildQuery() 
+    
+    public function getResult()
     {
-        $qb = $this->dataGrid->getQueryBuilder();
-
+        if (null === $this->getQuery()){
+            throw new \LogicException('Query is not ready. Use handle method first.');
+        }
+        
+        return $this->getQuery()->getArrayResult();
+    }
+    
+    protected function buildQuery($qb, array $parameters)
+    {
         if (!$qb instanceof QueryBuilder){
             throw new \InvalidArgumentException('Value must be instance of Doctrine\ORM\QueryBuilder.');
         }
         
-        $options = $this->getOptions();
-        
-        // Is dependant grid ?
-        if ($this->dataGrid->isDependentGrid()) {
-            $qb->setParameter('masterGridRowId', $options['masterGridRowId']);
-        }
-        
-        // Orders the records
-        if ($options['orderBy']) {
-            $qb->addOrderBy($options['orderBy'], $options['sort']);
-        }
-        
         // Applying search filters
-        if ($options['search'] && !empty($options['filters'])) {
-            $this->applyFilters($qb, $options['filters']);
+        if ($filters = $this->getFilters($parameters)) {
+             $this->applyFilters($qb, $filters); 
         }
         
-        if (!$this->dataGrid->isSortableEnabled() && $options['page'] && $options['records']){
-            $qb->setMaxResults($options['records']);
-            $qb->setFirstResult(($options['page'] - 1) * $options['records']);
+        if ($parameters['orderBy']) {
+            $qb->addOrderBy($parameters['orderBy'], $parameters['sort']);
         }
-
-        $queryBuilderEvent = new QueryBuilderEvent($this->dataGrid->getName(), $qb);
-        $this->dispatcher->dispatch(DataGridEvents::onQueryBuilderReady, $queryBuilderEvent);
         
-        $this->setQuery($queryBuilderEvent->getQueryBuilder()->getQuery());
+        if ($parameters['page'] && $parameters['records']){
+            $qb->setMaxResults($parameters['records']);
+            $qb->setFirstResult(($parameters['page'] - 1) * $parameters['records']);
+        }
         
-        // Getting count
+        $this->setQuery($qb->getQuery());
+        
+         // Getting count
         $paginator = new Paginator($this->getQuery());
         //$paginator->setUseOutputWalkers(false);
         $this->setCount($paginator->count());
@@ -74,34 +61,21 @@ class DataGridHandler extends AbstractDataGridHandler
         return $this;
     }
     
-    /**
-     * (non-PHPdoc)
-     * @see \Thrace\DataGridBundle\DataGrid\DataGridHandlerInterface::getResult()
-     */
-    public function getResult()
-    {   
-        return $this->getQuery()->getArrayResult();
-    }
-      
+    
     /**
      * Applying the filters on QueryBuilder
      *
      * @param QueryBuilder $qb
      * @param object $filters
      * @return void
-     * @throws \RuntimeException
+     * @throws \InvalidArgumentException
      */
-    private function applyFilters (QueryBuilder $qb, array $filters)
+    protected function applyFilters ($qb, array $filters)
     {
-
-        if (!isset($filters['groupOp']) || !in_array($filters['groupOp'], array('AND', 'OR'))){
-            throw new \InvalidArgumentException('Operator does not match OR | AND');
+        if (!$qb instanceof QueryBuilder){
+            throw new \InvalidArgumentException('Value must be instance of Doctrine\ORM\QueryBuilder.');
         }
 
-        if (!isset($filters['rules']) || !is_array($filters['rules'])){
-            throw new \InvalidArgumentException('Rules are not set.');
-        }
-        
         $groupOp = $filters['groupOp'];
     
         $andXWithWhere = $qb->expr()->andX();
@@ -116,7 +90,7 @@ class DataGridHandler extends AbstractDataGridHandler
             $rule = $this->getResolvedRule((array) $rule);
             
             $field = $this->getFieldQuery($rule['field'], $rule['op'], $rule['data'], $qb);
-            $isAgrigated = $this->isAggregated($rule['field']);
+            $isAgrigated = $this->isAggregatedField($rule['field']);
             
             if ($groupOp === 'AND'){
                 if (false === $isAgrigated){
@@ -132,15 +106,15 @@ class DataGridHandler extends AbstractDataGridHandler
                 }
             }
         }
-    
-        
-          
+      
         (count($andXWithWhere->getParts()) > 0) ? $qb->andWhere($andXWithWhere) : null;
         (count($andXWithHaving->getParts()) > 0) ? $qb->andHaving($andXWithHaving) : null; 
         
         // we use addWhere/addHaving because if we add a where/having clause beforehand then it will be ignored.
         (count($orXWithWhere->getParts()) > 0) ? $qb->andWhere($orXWithWhere) : null;
-        (count($orXWithHaving->getParts()) > 0) ? $qb->andHaving($orXWithHaving) : null;     
+        (count($orXWithHaving->getParts()) > 0) ? $qb->andHaving($orXWithHaving) : null;  
+        
+        return $this;
     }
     
     /**
@@ -150,10 +124,10 @@ class DataGridHandler extends AbstractDataGridHandler
      * @param string $searchOper
      * @param string $term
      * @param QueryBuilder $qb
-     * @return \Doctrine\ORM\Query\Expr | \Doctrine\ORM\Query\Func
+     * @return Expr | \Doctrine\ORM\Query\Func
      * @throws \InvalidArgumentException
      */
-    private function getFieldQuery ($field, $searchOper, $term, QueryBuilder $qb)
+    protected function getFieldQuery ($field, $searchOper, $term, QueryBuilder $qb)
     {   
       
         switch ($searchOper) {
@@ -197,24 +171,4 @@ class DataGridHandler extends AbstractDataGridHandler
                 throw new \InvalidArgumentException(sprintf('Search operator %s is not valid', $searchOper));
         }
     }
-    
-    /**
-     * Checks if field is aggregated value
-     * 
-     * @param string $field
-     * @return boolean
-     */
-    private function isAggregated($field)
-    {
-        $cols = $this->getDataGrid()->getColModel();
-        
-        foreach ($cols as $col){
-            if ($col['index'] === $field && isset($col['aggregated']) && $col['aggregated'] === true){
-                return true;
-            }
-        }
-        
-        return false;
-    }
-
 }

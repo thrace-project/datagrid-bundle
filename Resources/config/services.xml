@@ -10,6 +10,7 @@
             <parameter key="thrace_data_grid.provider.class">Thrace\DataGridBundle\DataGrid\Provider\DataGridProvider</parameter>
             <parameter key="thrace_data_grid.doctrine.orm.handler.datagrid.class">Thrace\DataGridBundle\Doctrine\ORM\DataGridHandler</parameter>
             <parameter key="thrace_data_grid.twig.extension.datagrid.class">Thrace\DataGridBundle\Twig\Extension\DataGridExtension</parameter>
+            <parameter key="thrace_data_grid.handler.orm.class">Thrace\DataGridBundle\Handler\ORMHandler</parameter>
         </parameters>
 
     <services>
@@ -36,6 +37,8 @@
             <argument type="service" id="service_container" />
             <tag name="twig.extension" />
         </service>
+
+        <service id="thrace_data_grid.handler.orm" class="%thrace_data_grid.handler.orm.class%" />
 
     </services>
 
