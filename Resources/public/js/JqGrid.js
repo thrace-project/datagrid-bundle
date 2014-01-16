@@ -33,7 +33,7 @@ define([
             customButtons: {},
         },
         configs: {},
-        datagrid: null,
+        grid: null,
         pager: null,
         navGrid: null,
         setConfigs: null,
@@ -52,7 +52,7 @@ define([
             dataConfigs.pager =  "pager-"+ this.$el.attr('id');
             
             this.configs = _.extend(this.defaultConfigs, dataConfigs);
-            this.setConfigs(this.configs);
+            this.setConfigs(this.configs, this);
         },
         initGrid: function(configs){
             this.grid = $('#' + configs.datagrid_id);
