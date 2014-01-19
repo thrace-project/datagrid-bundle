@@ -22,6 +22,16 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 class ORMHandler extends AbstractHandler
 {      
     
+    public function buildCount($query)
+    {
+        // Getting count
+        $paginator = new Paginator($this->getQuery());
+        //$paginator->setUseOutputWalkers(false);
+        $this->setCount($paginator->count());
+        
+        return $this;
+    }
+    
     public function getResult()
     {
         if (null === $this->getQuery()){
@@ -31,7 +41,7 @@ class ORMHandler extends AbstractHandler
         return $this->getQuery()->getArrayResult();
     }
     
-    protected function buildQuery($qb, array $parameters)
+    protected function modifyQueryBuilder($qb, array $parameters)
     {
         if (!$qb instanceof QueryBuilder){
             throw new \InvalidArgumentException('Value must be instance of Doctrine\ORM\QueryBuilder.');
@@ -50,13 +60,6 @@ class ORMHandler extends AbstractHandler
             $qb->setMaxResults($parameters['records']);
             $qb->setFirstResult(($parameters['page'] - 1) * $parameters['records']);
         }
-        
-        $this->setQuery($qb->getQuery());
-        
-         // Getting count
-        $paginator = new Paginator($this->getQuery());
-        //$paginator->setUseOutputWalkers(false);
-        $this->setCount($paginator->count());
         
         return $this;
     }

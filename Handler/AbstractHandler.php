@@ -21,6 +21,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 abstract class AbstractHandler  
 {
 
+    protected $eventDispatcher;
+    
     protected $queryBuilder;
     
     /**
@@ -36,6 +38,36 @@ abstract class AbstractHandler
     
     protected $parameters;
     
+    protected $locked = false;
+    
+    public function setEventDispatcher(\Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+        return $this;
+    }
+
+    public function addEventListener($eventName, $listener, $priority = 0)
+    {
+        if ($this->locked) {
+            throw new \BadMethodCallException('EventListeners can be added before handle method is called');
+        }
+        
+        $this->eventDispatcher->addListener($eventName, $listener, $priority);
+        
+        return $this;
+    }
+    
+    public function addEventSubscriber(\Symfony\Component\EventDispatcher\EventSubscriberInterface $subscriber)
+    {
+        if ($this->locked) {
+            throw new \BadMethodCallException('EventSubscribers can be added before handle method is called');
+        }
+
+        $this->eventDispatcher->addSubscriber($subscriber);
+
+        return $this;
+    }
+
     public function getParameters()
     {
         if (null === $this->parameters){
@@ -106,12 +138,44 @@ abstract class AbstractHandler
 
     public function handle(Request $request)
     {
+        $this->locked = true;
         $requestParameters = $this->getRequestParameters($request);
         $this->resolveParameters($requestParameters);
 
-        $this->buildQuery($this->getQueryBuilder(), $this->getParameters());
-        $this->buildData($this->getParameters());
+        $qb = $this->getQueryBuilder();
+        $this->modifyQueryBuilder($qb, $this->getParameters());
+        
+        if ($this->eventDispatcher->hasListeners(\Thrace\DataGridBundle\DataGridEvents::onQueryBuilderReady)) {
+            // Events need to be refactored.
+            $queryBuilderEvent = new \Thrace\DataGridBundle\Event\QueryBuilderEvent('ORM', $qb);
+            $this->eventDispatcher->dispatch(\Thrace\DataGridBundle\DataGridEvents::onQueryBuilderReady, $queryBuilderEvent);
+            $qb = $queryBuilderEvent->getQueryBuilder();
+        }
+        
+        
 
+        $query = $qb->getQuery();
+        
+        if ($this->eventDispatcher->hasListeners(\Thrace\DataGridBundle\DataGridEvents::onQueryReady)) {
+            // Events need to be refactored.
+            $queryEvent = new \Thrace\DataGridBundle\Event\QueryEvent('ORM', $query);
+            $this->eventDispatcher->dispatch(\Thrace\DataGridBundle\DataGridEvents::onQueryReady, $queryEvent);
+            $query = $queryEvent->getQuery();
+        }
+        
+        $this->setQuery($query);
+        
+        $this->buildCount($query);
+        
+        $this->buildData($this->getResult(), $this->getParameters());
+        
+        if ($this->eventDispatcher->hasListeners(\Thrace\DataGridBundle\DataGridEvents::onDataReady)) {
+            // Events need to be refactored.
+            $dataEvent = new \Thrace\DataGridBundle\Event\DataEvent('ORM', $this->getData());
+            $this->eventDispatcher->dispatch(\Thrace\DataGridBundle\DataGridEvents::onDataReady, $dataEvent);
+            $this->data = $dataEvent->getData();
+        }
+        
         return $this;
     }
     
@@ -235,13 +299,13 @@ abstract class AbstractHandler
         return false;
     }
     
-    protected function buildData($parameters)
+    protected function buildData(array $result, array $parameters)
     {
         $total = ($parameters['page'] && $parameters['records']) ?  ceil($this->getCount() / $parameters['records']) : $this->getCount();
         
         $rows = array();
 
-        foreach ($this->getResult() as $row) {
+        foreach ($result as $row) {
             $colData = array();
             foreach($row as $key => $col){
                 if(!is_string($key)){
@@ -261,8 +325,11 @@ abstract class AbstractHandler
         );
 
         $this->data = $data;
+        
         return $this;
     }
     
-    abstract protected function buildQuery($qb, array $parameters);
+    abstract protected function modifyQueryBuilder($qb, array $parameters);
+    
+    abstract protected function buildCount($query);
 }

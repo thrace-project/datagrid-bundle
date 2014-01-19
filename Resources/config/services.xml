@@ -10,7 +10,10 @@
             <parameter key="thrace_data_grid.provider.class">Thrace\DataGridBundle\DataGrid\Provider\DataGridProvider</parameter>
             <parameter key="thrace_data_grid.doctrine.orm.handler.datagrid.class">Thrace\DataGridBundle\Doctrine\ORM\DataGridHandler</parameter>
             <parameter key="thrace_data_grid.twig.extension.datagrid.class">Thrace\DataGridBundle\Twig\Extension\DataGridExtension</parameter>
+            <parameter key="thrace_data_grid.event_dispatcher.class">Symfony\Component\EventDispatcher\EventDispatcher</parameter>
             <parameter key="thrace_data_grid.handler.orm.class">Thrace\DataGridBundle\Handler\ORMHandler</parameter>
+            <parameter key="thrace_data_grid.event_subscriber.translatable.class">Thrace\DataGridBundle\EventSubscriber\TranslatableSubscriber</parameter>
+            <parameter key="thrace_data_grid.event_subscriber.timezone.class">Thrace\DataGridBundle\EventSubscriber\TimezoneSubscriber</parameter>
         </parameters>
 
     <services>
@@ -38,7 +41,16 @@
             <tag name="twig.extension" />
         </service>
 
-        <service id="thrace_data_grid.handler.orm" class="%thrace_data_grid.handler.orm.class%" />
+        <service id="thrace_data_grid.event_dispatcher" class="%thrace_data_grid.event_dispatcher.class%" scope="prototype" />
+
+        <service id="thrace_data_grid.handler.orm" class="%thrace_data_grid.handler.orm.class%">
+            <call method="setEventDispatcher">
+                <argument type="service" id="thrace_data_grid.event_dispatcher" strict="false" />
+            </call>
+        </service>
+        
+         <service id="thrace_data_grid.event_subscriber.translatable" class="%thrace_data_grid.event_subscriber.translatable.class%" scope="prototype" />
+         <service id="thrace_data_grid.event_subscriber.timezone" class="%thrace_data_grid.event_subscriber.timezone.class%" scope="prototype" />
 
     </services>
 
