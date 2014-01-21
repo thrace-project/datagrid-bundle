@@ -5,38 +5,10 @@ define([
 ], function($, _, Backbone) {
 
     return Backbone.View.extend({
-        defaultConfigs: {
-            datatype: 'json',
-            viewrecords: true,
-            sortorder: 'asc', 
-            autowidth: true,
-            gridview: true,
-            rowList: [10,20,30,50],
-            rowNum: 10,
-            pgbuttons:true,
-            forceFit: true,
-            shrinkToFit: true,
-            scroll: false,
-            enableSearchBtn: false,
-            enableAddBtn: false,
-            enableEditBtn: false,
-            enableDeleteBtn: false,
-            viewParams: {},
-            searchParams: {
-                sopt: ['eq', 'ne', 'lt', 'le', 'gt', 'ge', 'bw', 'bn', 'ew', 'en', 'cn', 'nc'], 
-                multipleSearch:true, 
-                multipleGroup:false
-            },
-            addParams: {},
-            editParams: {},
-            deleteParams: {},
-            customButtons: {},
-        },
         configs: {},
         grid: null,
         pager: null,
         navGrid: null,
-        setConfigs: null,
         render: function() {   
             this.initConfigs();
             
@@ -51,7 +23,35 @@ define([
             dataConfigs.datagrid_id = "jggrid-"+ this.$el.attr('id');
             dataConfigs.pager =  "pager-"+ this.$el.attr('id');
             
-            this.configs = _.extend(this.defaultConfigs, dataConfigs);
+            var defaultConfigs =  {
+                datatype: 'json',
+                viewrecords: true,
+                sortorder: 'asc', 
+                autowidth: true,
+                gridview: true,
+                rowList: [10,20,30,50],
+                rowNum: 10,
+                pgbuttons:true,
+                forceFit: true,
+                shrinkToFit: true,
+                scroll: false,
+                enableSearchBtn: false,
+                enableAddBtn: false,
+                enableEditBtn: false,
+                enableDeleteBtn: false,
+                viewParams: {},
+                searchParams: {
+                    sopt: ['eq', 'ne', 'lt', 'le', 'gt', 'ge', 'bw', 'bn', 'ew', 'en', 'cn', 'nc'], 
+                    multipleSearch:true, 
+                    multipleGroup:false
+                },
+                addParams: {},
+                editParams: {},
+                deleteParams: {},
+                customButtons: {},
+            };
+            
+            this.configs = _.extend(defaultConfigs, dataConfigs);
             this.setConfigs(this.configs, this);
         },
         initGrid: function(configs){
