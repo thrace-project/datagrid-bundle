@@ -5,7 +5,7 @@ define([
 ], function($, _, Backbone) {
 
     return Backbone.View.extend({
-        configs: {},
+        configs: null,
         grid: null,
         pager: null,
         navGrid: null,
