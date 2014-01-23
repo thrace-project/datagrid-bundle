@@ -10,6 +10,11 @@ define([
         pager: null,
         navGrid: null,
         render: function() {   
+
+            if(this.$el.length === 0){
+                return;
+            }
+            
             this.initConfigs();
             
             this.$el.append('<table id="'+ this.configs.datagrid_id +'"></table>');
