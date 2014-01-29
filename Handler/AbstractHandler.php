@@ -173,10 +173,10 @@ abstract class AbstractHandler
             // Events need to be refactored.
             $dataEvent = new \Thrace\DataGridBundle\Event\DataEvent('ORM', $result);
             $this->eventDispatcher->dispatch(\Thrace\DataGridBundle\DataGridEvents::onDataReady, $dataEvent);
-            $this->data = $dataEvent->getData();
+            $result = $dataEvent->getData();
         }
         
-        $this->buildData($this->getData(), $this->getParameters());
+        $this->buildData($result, $this->getParameters());
         
  
         return $this;
