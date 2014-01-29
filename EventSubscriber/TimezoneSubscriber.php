@@ -31,23 +31,20 @@ class TimezoneSubscriber implements EventSubscriberInterface
      */
     public function onDataReady(DataEvent $event)
     {
-        
-        $data = $event->getData();  
-        $new  = array();
+         
+        $data  = array();
        
-        foreach ($data['rows'] as $key => $row){
+        foreach ($event->getData() as $key => $row){
             foreach ($row as $field => $value){
                 
                 if($value instanceof \DateTime){
                     $value->setTimezone(new \DateTimeZone($this->timezone));
                 }
                 
-                $new[$key][$field] = $value;
+                $data[$key][$field] = $value;
             }
         }
         
-        $data['rows'] = $new;
-
         $event->setData($data);
     }
     
