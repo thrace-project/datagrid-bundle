@@ -19,14 +19,19 @@ define([
             
             this.$el.append('<table id="'+ this.configs.datagrid_id +'"></table>');
             this.$el.append('<div id="'+ this.configs.pager +'"></div>');
-
+            
             this.initGrid(this.configs);
             this.initNavGrid(this.configs);
+            
+            if(this.configs.enableFilterToolbar){
+                this.initToolbar(this.configs);
+            }    
         },
         initConfigs: function(){
             var dataConfigs = this.$el.data('configs');
             dataConfigs.datagrid_id = "jggrid-"+ this.$el.attr('id');
             dataConfigs.pager =  "pager-"+ this.$el.attr('id');
+            dataConfigs.toolbar =  "toolbar-"+ this.$el.attr('id');
             
             var defaultConfigs =  {
                 datatype: 'json',
@@ -54,6 +59,8 @@ define([
                 editParams: {},
                 deleteParams: {},
                 customButtons: {},
+                enableFilterToolbar: false,
+                filterToolbarParams: {}
             };
             
             this.configs = _.extend(defaultConfigs, dataConfigs);
@@ -81,6 +88,10 @@ define([
     
             this.customButtons(this.grid, this.navGrid,  this.pager, configs.customButtons);
             
+        },
+        initToolbar: function(configs){
+            configs.filterToolbarParams.stringResult = true;
+            this.grid.jqGrid('filterToolbar', configs.filterToolbarParams);
         },
         customButtons: function(grid, navGrid, pager, customButtons){
             _.each(customButtons, function(configs){

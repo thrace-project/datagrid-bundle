@@ -92,6 +92,10 @@ class ORMHandler extends AbstractHandler
         foreach ($filters['rules'] as $rule) {
             $rule = $this->getResolvedRule((array) $rule);
             
+            if($rule['data'] === '__ignore__'){
+                continue;
+            }
+            
             $field = $this->getFieldQuery($rule['field'], $rule['op'], $rule['data'], $qb);
             $isAgrigated = $this->isAggregatedField($rule['field']);
             
