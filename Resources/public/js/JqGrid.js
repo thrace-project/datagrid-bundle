@@ -28,7 +28,8 @@ define([
             }    
         },
         initConfigs: function(){
-            var dataConfigs = this.$el.data('configs');
+            var dataConfigs = (this.$el.data('configs') === undefined) ? {} : this.$el.data('configs');
+            
             dataConfigs.datagrid_id = "jggrid-"+ this.$el.attr('id');
             dataConfigs.pager =  "pager-"+ this.$el.attr('id');
             dataConfigs.toolbar =  "toolbar-"+ this.$el.attr('id');

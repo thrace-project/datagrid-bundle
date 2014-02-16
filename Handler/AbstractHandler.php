@@ -34,6 +34,8 @@ abstract class AbstractHandler
     
     protected $data;
     
+    protected $paginationData;
+    
     protected $count;
     
     protected $parameters;
@@ -136,6 +138,15 @@ abstract class AbstractHandler
         return $this->data;
     }
 
+    public function getPaginationData()
+    {
+        if (null === $this->paginationData){
+            throw new \LogicException('PaginationData is not ready. Use handle method first.');
+        }
+        
+        return $this->paginationData;
+    }
+
     public function handle(Request $request)
     {
         $this->locked = true;
@@ -177,6 +188,7 @@ abstract class AbstractHandler
         }
         
         $this->buildData($result, $this->getParameters());
+        $this->buildPaginationData($result, $this->getParameters());
         
  
         return $this;
@@ -307,6 +319,7 @@ abstract class AbstractHandler
         $total = ($parameters['page'] && $parameters['records']) ?  ceil($this->getCount() / $parameters['records']) : $this->getCount();
         
         $rows = array();
+        $flat = array();
 
         foreach ($result as $row) {
             $colData = array();
@@ -316,7 +329,8 @@ abstract class AbstractHandler
                 }
                 $colData[$key] = $col;
             }
-
+            
+            $flat[] = $colData;
             $rows[] = array('id' => $row['id'], 'cell' => $colData);
         }
         
@@ -324,10 +338,42 @@ abstract class AbstractHandler
             'page'    => $parameters['page'],
             'total'   => $total,
             'records' => $this->getCount(),
-            'rows'    => $rows
+            'rows'    => $rows,
+            'data'    => $flat
         );
 
         $this->data = $data;
+        
+        return $this;
+    }
+    
+    protected function buildPaginationData(array $result, array $parameters)
+    {
+        $totalPages = ($parameters['page'] && $parameters['records']) ?  ceil($this->getCount() / $parameters['records']) : $this->getCount();
+        
+        $items = array();
+
+        foreach ($result as $row) {
+            $colData = array();
+            foreach($row as $key => $col){
+                if(!is_string($key)){
+                    continue;
+                }
+                $colData[$key] = $col;
+            }
+            
+            $items[] = $colData;
+        }
+        
+        $data =  array(
+            'currentPageNumber'   => $parameters['page'],
+            'itemNumberPerPage' => $parameters['records'],
+            'totalItemsCount' => $this->getCount(),
+            'totalPages' => $totalPages,
+            'items'    => $items
+        );
+
+        $this->paginationData = $data;
         
         return $this;
     }
