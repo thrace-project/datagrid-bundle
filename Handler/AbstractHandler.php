@@ -260,22 +260,22 @@ abstract class AbstractHandler
     protected function getRequestParameters(Request $request)
     {
         // $page current page of the grid
-        $page = (int) $request->get('page', 0);
+        $page = (int) $request->query->get('page', 0);
         
         // $orderBy column name to sort datagrid records
-        $orderBy = $request->get('sidx', false);
+        $orderBy = $request->query->get('sidx', false);
         
         // ASC | DESC $sort
-        $sort = strtoupper($request->get('sord', 'asc'));
+        $sort = strtoupper($request->query->get('sord', 'asc'));
         
         // $records  number of records to display
-        $records = (int) $request->get('rows', 0);
+        $records = (int) $request->query->get('rows', 0);
         
         // $search is search in the query
-        $search = ($request->get('_search', false) === 'true');
+        $search = ($request->query->get('_search', false) === 'true');
  
         // $filters Filters from the search query
-        $filters = (array) json_decode($request->get('filters', '{}'));
+        $filters = (array) json_decode($request->query->get('filters', '{}'));
         
         
         $parameters = array(
