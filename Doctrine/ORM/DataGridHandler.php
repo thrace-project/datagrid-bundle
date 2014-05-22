@@ -46,14 +46,17 @@ class DataGridHandler extends AbstractDataGridHandler
             $qb->setParameter('masterGridRowId', $options['masterGridRowId']);
         }
         
-        // Orders the records
-        if ($options['orderBy']) {
-            $qb->addOrderBy($options['orderBy'], $options['sort']);
-        }
+        
         
         // Applying search filters
         if ($options['search'] && !empty($options['filters'])) {
             $this->applyFilters($qb, $options['filters']);
+        }
+        
+        
+        // Orders the records
+        if ($options['orderBy']) {
+            $qb->addOrderBy($options['orderBy'], $options['sort']);
         }
         
         if (!$this->dataGrid->isSortableEnabled() && $options['page'] && $options['records']){

@@ -14,6 +14,7 @@
             <parameter key="thrace_data_grid.handler.orm.class">Thrace\DataGridBundle\Handler\ORMHandler</parameter>
             <parameter key="thrace_data_grid.event_subscriber.translatable.class">Thrace\DataGridBundle\EventSubscriber\TranslatableSubscriber</parameter>
             <parameter key="thrace_data_grid.event_subscriber.timezone.class">Thrace\DataGridBundle\EventSubscriber\TimezoneSubscriber</parameter>
+            <parameter key="thrace_data_grid.event_subscriber.datetime.class">Thrace\DataGridBundle\EventSubscriber\DateTimeSubscriber</parameter>
         </parameters>
 
     <services>
@@ -51,6 +52,7 @@
         
          <service id="thrace_data_grid.event_subscriber.translatable" class="%thrace_data_grid.event_subscriber.translatable.class%" scope="prototype" />
          <service id="thrace_data_grid.event_subscriber.timezone" class="%thrace_data_grid.event_subscriber.timezone.class%" scope="prototype" />
+         <service id="thrace_data_grid.event_subscriber.datetime" class="%thrace_data_grid.event_subscriber.datetime.class%" scope="prototype" />
 
     </services>
 
