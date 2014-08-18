@@ -88,6 +88,7 @@ class ORMHandler extends AbstractHandler
         $orXWithHaving = $qb->expr()->orX();
 
         $supportedAggregateOperators = array('eq', 'ne', 'lt', 'le', 'gt', 'ge');
+        $aggregatedFields = $this->getAggregatedFields($qb->getQuery()->getAst());
     
         foreach ($filters['rules'] as $rule) {
             $rule = $this->getResolvedRule((array) $rule);
@@ -97,7 +98,7 @@ class ORMHandler extends AbstractHandler
             }
             
             $field = $this->getFieldQuery($rule['field'], $rule['op'], $rule['data'], $qb);
-            $isAgrigated = $this->isAggregatedField($rule['field']);
+            $isAgrigated = in_array($rule['field'], $aggregatedFields);
             
             if ($groupOp === 'AND'){
                 if (false === $isAgrigated){
@@ -177,5 +178,19 @@ class ORMHandler extends AbstractHandler
             default:
                 throw new \InvalidArgumentException(sprintf('Search operator %s is not valid', $searchOper));
         }
+    }
+    
+    protected function getAggregatedFields(\Doctrine\ORM\Query\AST\SelectStatement $selectStatement)
+    {  
+        $fields = [];
+        $selectClauses = $selectStatement->selectClause;
+
+        foreach ($selectClauses->selectExpressions as $expression){           
+            if($expression->expression instanceof \Doctrine\ORM\Query\AST\Node){
+               $fields[md5($expression->fieldIdentificationVariable)] = $expression->fieldIdentificationVariable;
+            }
+        }
+        
+        return $fields;
     }
 }

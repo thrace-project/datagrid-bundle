@@ -290,11 +290,6 @@ abstract class AbstractHandler
         return $parameters;
     }
     
-    protected function isAggregatedField($field)
-    {
-        return (bool) preg_match('/_aggregated$/', $field);
-    }
-    
     protected function getFilters(array $parameters)
     {
         if ($parameters['search'] && !empty($parameters['filters'])) {
