@@ -729,7 +729,7 @@ class DataGrid implements DataGridInterface
      */
     public function setSearchOptions(array $searchOptions)
     {
-        $availableOptions = array('eq', 'ne', 'lt', 'le', 'gt', 'ge', 'bw', 'bn', 'ew', 'en', 'cn', 'nc');
+        $availableOptions = array('cn', 'ne', 'lt', 'le', 'gt', 'ge', 'bw', 'bn', 'ew', 'en', 'eq', 'nc');
         if (count(array_diff($searchOptions, $availableOptions)) > 0){
             throw new \InvalidArgumentException(sprintf('Invalid search options %s', json_encode($searchOptions)));
         }
@@ -748,7 +748,7 @@ class DataGrid implements DataGridInterface
             return $this->searchOptions;
         }
         
-        return array('eq', 'ne', 'lt', 'le', 'gt', 'ge', 'bw', 'bn', 'ew', 'en', 'cn', 'nc');
+        return array('cn', 'ne', 'lt', 'le', 'gt', 'ge', 'bw', 'bn', 'ew', 'en', 'ceq', 'nc');
     }
 
     /**

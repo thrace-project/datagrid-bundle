@@ -52,7 +52,7 @@ define([
                 enableDeleteBtn: false,
                 viewParams: {},
                 searchParams: {
-                    sopt: ['eq', 'ne', 'lt', 'le', 'gt', 'ge', 'bw', 'bn', 'ew', 'en', 'cn', 'nc'], 
+                    sopt: ['cn', 'ne', 'lt', 'le', 'gt', 'ge', 'bw', 'bn', 'ew', 'en', 'eq', 'nc'], 
                     multipleSearch:true, 
                     multipleGroup:false
                 },
