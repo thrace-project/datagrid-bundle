@@ -748,7 +748,7 @@ class DataGrid implements DataGridInterface
             return $this->searchOptions;
         }
         
-        return array('cn', 'ne', 'lt', 'le', 'gt', 'ge', 'bw', 'bn', 'ew', 'en', 'ceq', 'nc');
+        return array('cn', 'ne', 'lt', 'le', 'gt', 'ge', 'bw', 'bn', 'ew', 'en', 'eq', 'nc');
     }
 
     /**
