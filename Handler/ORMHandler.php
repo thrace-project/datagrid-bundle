@@ -136,8 +136,11 @@ class ORMHandler extends AbstractHandler
      * @throws \InvalidArgumentException
      */
     protected function getFieldQuery ($field, $searchOper, $term, QueryBuilder $qb)
-    {   
-      
+    {
+        if(is_array($this->searchableProperties) && !in_array($field, $this->searchableProperties)){
+            throw new \Exception(sprintf('Field %s is not searchable', $field));
+        }
+
         switch ($searchOper) {
             case 'eq':
                 return $qb->expr()->eq($field, $qb->expr()->literal($term));

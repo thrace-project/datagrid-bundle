@@ -41,6 +41,14 @@ abstract class AbstractHandler
     protected $parameters;
     
     protected $locked = false;
+
+    protected $searchableProperties;
+
+    public function setSearchableProperties(array $searchableProperties = null)
+    {
+        $this->searchableProperties = $searchableProperties;
+        return $this;
+    }
     
     public function setEventDispatcher(\Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher)
     {
