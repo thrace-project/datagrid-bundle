@@ -33,8 +33,10 @@
             dataConfigs.toolbar =  "toolbar-"+ this.$el.attr('id');
             var postdata = $.cookie(dataConfigs.datagrid_id) != undefined ? JSON.parse($.cookie(dataConfigs.datagrid_id)) : {};
 
-            console.log('Config');
             console.log(postdata);
+            if(postdata.filters != undefined && postdata.filters.length > 2){
+                alert('Search filters are applied');
+            }
 
             if(postdata.sidx != undefined){
                 dataConfigs.sortname = postdata.sidx;
