@@ -31,8 +31,29 @@
             dataConfigs.datagrid_id = "jggrid-"+ this.$el.attr('id');
             dataConfigs.pager =  "pager-"+ this.$el.attr('id');
             dataConfigs.toolbar =  "toolbar-"+ this.$el.attr('id');
-            
+            var postdata = $.cookie(dataConfigs.datagrid_id) != undefined ? JSON.parse($.cookie(dataConfigs.datagrid_id)) : {};
+
+            console.log('Config');
+            console.log(postdata);
+
+            if(postdata.sidx != undefined){
+                dataConfigs.sortname = postdata.sidx;
+            }
+
+            if(postdata.sord != undefined){
+                dataConfigs.sortorder = postdata.sord;
+            }
+
+            if(postdata.page != undefined){
+                dataConfigs.page = parseInt(postdata.page);
+            }
+
+            if(postdata.page != undefined){
+                dataConfigs.rowNum = parseInt(postdata.rows);
+            }
+
             var defaultConfigs =  {
+                postData: postdata,
                 datatype: 'json',
                 viewrecords: true,
                 sortorder: 'asc', 
@@ -59,10 +80,24 @@
                 deleteParams: {},
                 customButtons: {},
                 enableFilterToolbar: false,
-                filterToolbarParams: {}
+                filterToolbarParams: {},
+                beforeRequest: function() {
+
+                    var grid = $('#' + dataConfigs.datagrid_id);
+                    var postdata = grid.jqGrid('getGridParam', 'postData');
+
+                    if(postdata.filters != undefined ){
+                        postdata._search = true;
+                    }
+
+                    $.cookie(dataConfigs.datagrid_id, JSON.stringify(postdata));
+
+                    return [true,''];
+                }
             };
-            
+
             this.configs = _.extend(defaultConfigs, dataConfigs);
+
             this.setConfigs(this.configs, this);
         },
         initGrid: function(configs){
@@ -106,7 +141,7 @@
                         } else {
                             window.alert('Please select row.');
                         }
-                    }, 
+                    }
                 };
 
                 navGrid.navButtonAdd(pager, _.extend(defaultConfigs, configs)); 
@@ -114,6 +149,6 @@
         },
         destroy: function(){
             this.$el.empty();
-        },
+        }
     });
 })(jQuery);
