@@ -33,32 +33,11 @@
             dataConfigs.toolbar =  "toolbar-"+ this.$el.attr('id');
             var postdata = $.cookie(dataConfigs.datagrid_id) != undefined ? JSON.parse($.cookie(dataConfigs.datagrid_id)) : {};
 
-            console.log(postdata);
-            if(postdata.filters != undefined && postdata.filters.length > 2){
-                alert('Search filters are applied');
-            }
-
-            if(postdata.sidx != undefined){
-                dataConfigs.sortname = postdata.sidx;
-            }
-
-            if(postdata.sord != undefined){
-                dataConfigs.sortorder = postdata.sord;
-            }
-
-            if(postdata.page != undefined){
-                dataConfigs.page = parseInt(postdata.page);
-            }
-
-            if(postdata.page != undefined){
-                dataConfigs.rowNum = parseInt(postdata.rows);
-            }
-
             var defaultConfigs =  {
                 postData: postdata,
                 datatype: 'json',
                 viewrecords: true,
-                sortorder: 'asc', 
+                sortorder: 'asc',
                 autowidth: true,
                 gridview: true,
                 rowList: [10,20,30,50],
@@ -101,6 +80,26 @@
             this.configs = _.extend(defaultConfigs, dataConfigs);
 
             this.setConfigs(this.configs, this);
+
+            if(postdata.filters != undefined && postdata.filters.length > 2){
+                alert('Search filters are applied');
+            }
+
+            if(postdata.sidx != undefined){
+                this.configs.sortname = postdata.sidx;
+            }
+
+            if(postdata.sord != undefined){
+                this.configs.sortorder = postdata.sord;
+            }
+
+            if(postdata.page != undefined){
+                this.configs.page = parseInt(postdata.page);
+            }
+
+            if(postdata.page != undefined){
+                this.configs.rowNum = parseInt(postdata.rows);
+            }
         },
         initGrid: function(configs){
             this.grid = $('#' + configs.datagrid_id);
