@@ -69,12 +69,12 @@ class DateTimeSubscriber implements EventSubscriberInterface
                 
                 if($value instanceof \DateTime){
                     
-                    $formatter = \IntlDateFormatter::create(
+                    $formatter = IntlDateFormatter::create(
                         $this->locale,
                         static::$formats[$this->dateFormat],
                         static::$formats[$this->timeFormat],
                         $this->timezone,
-                        \IntlDateFormatter::GREGORIAN,
+                        IntlDateFormatter::GREGORIAN,
                         $this->format
                     );
 
