@@ -69,7 +69,7 @@ class DateTimeSubscriber implements EventSubscriberInterface
                 
                 if($value instanceof \DateTime){
                     
-                    $formatter = IntlDateFormatter::create(
+                    $formatter = \IntlDateFormatter::create(
                         $this->locale,
                         static::$formats[$this->dateFormat],
                         static::$formats[$this->timeFormat],
@@ -77,6 +77,17 @@ class DateTimeSubscriber implements EventSubscriberInterface
                         IntlDateFormatter::GREGORIAN,
                         $this->format
                     );
+
+                    if(!$formatter){
+                        $formatter = IntlDateFormatter::create(
+                            'en',
+                            static::$formats[$this->dateFormat],
+                            static::$formats[$this->timeFormat],
+                            $this->timezone,
+                            \IntlDateFormatter::GREGORIAN,
+                            $this->format
+                        );
+                    }
 
                     $value =  $formatter->format($value->getTimestamp());
 
