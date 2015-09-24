@@ -22,7 +22,7 @@ interface DataGridFactoryInterface
      * Create a datagrid from DataGridInterface
      *
      * @param string $name;                   
-     * @return Thrace\DataGridBundle\DataGrid\DataGridInterface
+     * @return \Thrace\DataGridBundle\DataGrid\DataGridInterface
      */
     public function createDataGrid ($name);
 

@@ -81,8 +81,11 @@
 
             this.setConfigs(this.configs, this);
 
-            if(postdata.filters != undefined && postdata.filters.length > 2){
-                alert('Search filters are applied');
+            var alertMessage = $('meta[name="datagrid_filter_msg"]').attr('content');
+
+            if(postdata.filters != undefined && postdata.filters.length > 2 && alertMessage != 'undefined'){
+                $(alertMessage).insertBefore('#' + this.$el.attr('id'));
+
             }
 
             if(postdata.sidx != undefined){
