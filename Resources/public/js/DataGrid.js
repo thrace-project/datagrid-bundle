@@ -31,7 +31,8 @@
             dataConfigs.datagrid_id = "jggrid-"+ this.$el.attr('id');
             dataConfigs.pager =  "pager-"+ this.$el.attr('id');
             dataConfigs.toolbar =  "toolbar-"+ this.$el.attr('id');
-            var postdata = $.cookie(dataConfigs.datagrid_id) != undefined ? JSON.parse($.cookie(dataConfigs.datagrid_id)) : {};
+            dataConfigs.uid =  "jggrid-"+ this.$el.attr('id') + $('meta[name="current_url_hash"]').attr('content');
+            var postdata = $.cookie(dataConfigs.uid) != undefined ? JSON.parse($.cookie(dataConfigs.uid)) : {};
 
             var defaultConfigs =  {
                 postData: postdata,
@@ -71,7 +72,7 @@
                         postdata._search = true;
                     }
 
-                    $.cookie(dataConfigs.datagrid_id, JSON.stringify(postdata));
+                    $.cookie(dataConfigs.uid, JSON.stringify(postdata));
 
                     return [true,''];
                 }
