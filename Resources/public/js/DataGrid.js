@@ -32,7 +32,7 @@
             dataConfigs.pager =  "pager-"+ this.$el.attr('id');
             dataConfigs.toolbar =  "toolbar-"+ this.$el.attr('id');
             dataConfigs.uid =  "jggrid-"+ this.$el.attr('id') + $('meta[name="current_url_hash"]').attr('content');
-            var postdata = $.cookie(dataConfigs.uid) != undefined ? JSON.parse($.cookie(dataConfigs.uid)) : {};
+            var postdata = store.get(dataConfigs.uid) != undefined ? JSON.parse(store.get(dataConfigs.uid)) : {};
 
             var defaultConfigs =  {
                 postData: postdata,
@@ -72,7 +72,7 @@
                         postdata._search = true;
                     }
 
-                    $.cookie(dataConfigs.uid, JSON.stringify(postdata));
+                    store.set(dataConfigs.uid, JSON.stringify(postdata));
 
                     return [true,''];
                 }
